@@ -1,0 +1,1208 @@
+From ???@??? Wed Nov  5 14:36:32 2025
+ARC-Seal: i=1; a=rsa-sha256; t=1761989302; cv=none; d=forwardemail.net;
+ s=default;
+ b=M1yle5YyVRA8dnLRETqCAxVq24CcSMOtOOxkIuWEtT7GwH9Q/SNQhHbwCDilCG5Ux0WOXBnUa
+ Lh+8kJK0XKhXYwGZ2IHraGvnZ9mA16C7sAoI9v4wPgwsSQ6BA/GcUv1YvDJv3U3WnZTCtJ8FSSx
+ YtG7oTtx68RzsCjPVFnZ29Y=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=forwardemail.net; h=In-Reply-To: Content-Type: MIME-Version: List-Post:
+ List-Help: List-Subscribe: List-Unsubscribe: List-Id: Reply-To:
+ References: Message-ID: Subject: To: From: Date; q=dns/txt; s=default;
+ t=1761989302; bh=ybuKL4HSEjXk3vJDAfOKwVD6WwV2fu85s/oAwyyY2GQ=;
+ b=XWA64RuYBktZrZyInuBGIRHX9QgVv6Oc6qDD7vlg9Kc8YFFuLWKStkFZfIOISwvNHZsAWuIUq
+ bO2wNIXID2Lpd6hmFo8plmZax3q6STM1+B/9jpbEJAvO5gRqsj20SXkJG4E4Z4oS81dDL+oQr6e
+ 47l13nRyw5FAIeqHoazfQ9s=
+ARC-Authentication-Results: i=1; mx1.forwardemail.net;
+ dkim=pass header.i=@codemadness.org header.s=cow header.a=rsa-sha256 header.b="UARLbm/D";
+ spf=pass (mx1.forwardemail.net: domain of dev+bounces-30730-ethan=rapidcow.org@suckless.org designates 195.201.112.86 as permitted sender)
+ smtp.mailfrom="dev+bounces-30730-ethan=rapidcow.org@suckless.org" smtp.helo=suckless.org;
+ dmarc=pass (p=NONE arc=none) header.from=codemadness.org header.d=codemadness.org;
+ bimi=skipped (too lax DMARC policy)
+Received: from suckless.org ([195.201.112.86] mx.suckless.org) by
+ mx1.forwardemail.net (Forward Email) with ESMTPS for <ethan@rapidcow.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384); Sat, 01 Nov 2025 09:28:18
+ +0000
+X-Original-To: ethan@rapidcow.org
+X-Forward-Email-Sender: rfc822;
+ dev+bounces-30730-ethan=rapidcow.org@suckless.org, mx.suckless.org,
+ 195.201.112.86
+X-Forward-Email-Version: 1.4.1
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Received: from suckless.org (localhost [127.0.0.1])
+	by mx.suckless.org (OpenSMTPD) with ESMTP id 3edb8c64
+	for <ethan@rapidcow.org>;
+	Sat, 1 Nov 2025 10:28:16 +0100 (CET)
+Delivered-To: dev@suckless.org
+Received: from cow.codemadness.org (cow.codemadness.org [149.210.185.89])
+	by mx.suckless.org (OpenSMTPD) with ESMTPS id 01ca6526 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <dev@suckless.org>;
+	Sat, 1 Nov 2025 10:27:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; s=cow; bh=SUi3Ccx78CiI6PN
+	mRbiwhxA98++gE6DV/yQFuDCLTuw=; h=in-reply-to:references:subject:to:
+	from:date; d=codemadness.org; b=UARLbm/Dx84G87nzHPr3Xi8LP4KJaXd53AAZw1
+	I4aiwt35LWRBTvPPYmYbDdPGULprwwJy27CL+hRf6WyGs1zuUjeG1j+p3wjVxHCjppIR5L
+	3UdUxOk7hF6/MUWSm+blJ3ZfG+i9hgZcHY9XIn32IYg+2KecGoJO0wN93pIfwbmm9SOOPh
+	goGrqIelZI1q15qvS5SFvCKRvGMZpJD16CbBOqpsPCL/rmxtWLU93kx74RbHmr1Jt1sSBW
+	4X2g62tuKLMEaWtl8xg4kUfiq+UMGHHGvvnvXOM5S4ati4M5oLgvakTKYFW6uLHi4kC1Cx
+	6fxW43U1pCZAbKHAPh2DBQ2S12dYEiGniFiOj3o/IBsqaynvjqPKdHGFl8LozLUYoSnU+9
+	oq8Fa/VNfQAYYFkTqHdrnEnteyP+JUeZVZ1y76AI4W1ReKZZ7XiCpMemCnk83O/F3IoFLU
+	hUaJ6lPzicYR5PP5gVoqUWLr6si3OICe/ylo9mr8y86iFD0mpvIfkXTgln0Ws0f9RqwDD9
+	ewlSCDxMM572KTBr5aiHUGkFV0WXOaapIIkTq8UVfyfMJGu9fctCtana9pf08Oe0/mp8G5
+	DAgspWRu0YuX9hqOjZlrm4Lktr4kkv3z1pY8Ikf0LNU9z+a/48X6NAFvofz5Dpb2EZqeZ6
+	rmKCnq5rQCyoE+s=
+Received: from cow.codemadness.org (localhost [127.0.0.1])
+	by cow.codemadness.org (OpenSMTPD) with ESMTP id 21dcfd5e
+	for <dev@suckless.org>;
+	Sat, 1 Nov 2025 10:27:14 +0100 (CET)
+Received: from localhost (cow.codemadness.org [local])
+	by cow.codemadness.org (OpenSMTPD) with ESMTPA id 85410a17
+	for <dev@suckless.org>;
+	Sat, 1 Nov 2025 10:27:14 +0100 (CET)
+Date: Sat, 1 Nov 2025 10:27:14 +0100
+From: Hiltjo Posthuma <hiltjo@codemadness.org>
+To: dev mail list <dev@suckless.org>
+Subject: Re: [dev] [sbase] grep: global-buffer-overflow
+Message-ID: <aQXScrep9jIuru1j@cow.codemadness.org>
+References: <20251023152806.65a95436@haengemotte.localdomain>
+Precedence: list
+Reply-To: dev mail list <dev@suckless.org>
+List-Id: dev mail list <dev.suckless.org>
+List-Unsubscribe: <mailto:dev+unsubscribe@suckless.org>
+List-Subscribe: <mailto:dev+subscribe@suckless.org>
+List-Help: <mailto:dev+help@suckless.org>
+List-Post: <mailto:dev@suckless.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251023152806.65a95436@haengemotte.localdomain>
+
+On Thu, Oct 23, 2025 at 03:28:06PM +0200, Frank Busse wrote:
+> Hi,
+> 
+> again found by KLEE:
+> 
+> ---
+> $ printf '\x00\x00\n\x00\x00\x00\x00\x00' > A
+> $ ./grep -xsf A
+> ERROR: AddressSanitizer: global-buffer-overflow
+> $ ./grep -wf A
+> ERROR: AddressSanitizer: global-buffer-overflow
+> ---
+> 
+> 
+> Best,
+> 
+> Frank
+> 
+
+Patch contributions would be welcome.
+
+-- 
+Kind regards,
+Hiltjo
+
+
+
+From ???@??? Wed Nov  5 14:36:32 2025
+ARC-Seal: i=1; a=rsa-sha256; t=1762026437; cv=none; d=forwardemail.net;
+ s=default;
+ b=U+5Qg3v+fYUFOWUQCq5d0juMI+CEF/Hg4mfQV7YQ0xlHlkMrQRyKAxN7FdOp1UbIjrf0zCBaU
+ AwN1jKBZbvFOeW4j5g3wTmV2sMsbTD3ZIYStB60fjaxQ3CEB91C5T30/jl7YG0b9l8hin4YZ63j
+ O3NA7hYtZHwwx53RkMOSMqQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=forwardemail.net; h=Content-Type: To: Subject: Message-ID: Date: From:
+ In-Reply-To: References: MIME-Version: List-Post: List-Help:
+ List-Subscribe: List-Unsubscribe: List-Id: Reply-To; q=dns/txt; s=default;
+ t=1762026437; bh=DfHkZQKVox1u69CrPjEudLw9KB3ip9RhhwqVTCrLyAA=;
+ b=IMJvymiHjmeUC9wTO55vJtdjfFm+aZGt+4qssuZLUk0EnPXHSrIa/lxEYqhO+50/pUGDB2xJB
+ ciRwEJYxK1NUVe+bvlVfdhKumKjkBLLcL4g7K21MX97lPX5xHiB1sj38yte4Hee8csm+HfyYQ2w
+ YHCAiVqsivyLk05EgWTUg00=
+ARC-Authentication-Results: i=1; mx1.forwardemail.net;
+ dkim=fail (bad signature) header.i=@gmail.com header.s=20230601 header.a=rsa-sha256 header.b=IAAKkEJy;
+ spf=pass (mx1.forwardemail.net: domain of dev+bounces-30731-ethan=rapidcow.org@suckless.org designates 195.201.112.86 as permitted sender)
+ smtp.mailfrom="dev+bounces-30731-ethan=rapidcow.org@suckless.org" smtp.helo=suckless.org;
+ dmarc=fail (p=NONE sp=QUARANTINE arc=none) header.from=gmail.com header.d=gmail.com;
+ bimi=skipped (message failed DMARC)
+Received: from suckless.org ([195.201.112.86] mx.suckless.org) by
+ mx1.forwardemail.net (Forward Email) with ESMTPS for <ethan@rapidcow.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384); Sat, 01 Nov 2025 19:47:11
+ +0000
+X-Original-To: ethan@rapidcow.org
+X-Forward-Email-Sender: rfc822;
+ dev+bounces-30731-ethan=rapidcow.org@suckless.org, mx.suckless.org,
+ 195.201.112.86
+X-Forward-Email-Version: 1.4.1
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Received: from suckless.org (localhost [127.0.0.1])
+	by mx.suckless.org (OpenSMTPD) with ESMTP id 8b61a1fb
+	for <ethan@rapidcow.org>;
+	Sat, 1 Nov 2025 20:47:11 +0100 (CET)
+Delivered-To: dev@suckless.org
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
+	by mx.suckless.org (OpenSMTPD) with ESMTPS id e15278fd (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <dev@suckless.org>;
+	Sat, 1 Nov 2025 20:45:38 +0100 (CET)
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-5db2593c063so2468565137.2
+        for <dev@suckless.org>; Sat, 01 Nov 2025 12:45:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762026337; x=1762631137; darn=suckless.org;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DfHkZQKVox1u69CrPjEudLw9KB3ip9RhhwqVTCrLyAA=;
+        b=IAAKkEJyvu7BA6zqc6PGABO3P4L6Ho8oR9Ko1ZOGU8WTTKOveXFRyFek48hUerd23y
+         eNDpATiHqVOQPNJ1YytThYkezOSMFXKr9e1BW9wib8GoQwURAZsiqb2toW6mIrg+ELpw
+         GohQDAvL4aZ6hwmq3dvHJW/XHd1HwR8Hf+jPkwCrBojbLEKJfGonwyzoX6wMk323H8br
+         hGz3CU+eZGfl68zBn1NV0OJkiB8toVf93z/Uv7ukWilgoUBZSi4hbsKPhG2FzoWZcA2E
+         Fd0RNMCFDjILtvvJOIYLK4CH4el170sJRY5kK2aoZ13j1Sm6dRgjtSd+Fds3AN6RT+/a
+         /6gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762026337; x=1762631137;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DfHkZQKVox1u69CrPjEudLw9KB3ip9RhhwqVTCrLyAA=;
+        b=eLu1HOwwXKznXk04Pf48Vogac8SMshErmyq/SKlyslXClP27bX7zlLYPINCaZdHpaJ
+         +54YZ3OmSgQDfkppI6FENzaR0/d+shRoJGlAn0CmPh/+jIzBl8eK+2HysgzF0UX201xV
+         eWYbhgwxApTk+u8eOCz6xI66jLxgb4BXt6xpaVZ3jPzNAqezPr7RtNnJoBPkqxarF8Hc
+         5b7AWAn84EJD4yxtZemStG8ztWAMUr2Fikt6pwI7blcXMkSFyaz8SWfMUh3ysP1hr8ou
+         EoVKxxWoKqVBK+dyA6HkH0gtRS2krgiMnuYN+TjzMj4FcDzU92O26wFHCJG3ljQnm8HH
+         jUYQ==
+X-Gm-Message-State: AOJu0Yx2N08tyEHP+Ok3lBAhNipj2OaK1lCRITp4Bt1t6sK9gC8ypsIP
+	zq8lUAw3UTKi99i/8vGM1HcMorLV4lMCYFm7Sy5bmACiualk9SenrkBQh6eA63zldRbhhspOxev
+	QTNxp8+VfG4IXcMeQwZIG8resKZlJIZf5nA==
+X-Gm-Gg: ASbGncttaOPw/FmxnyHAUbA5twibLqMZpfMCzH4Mpas/k4pi+MF9HtFyaH114z+RKKg
+	DNsSBEkVEBLB6SFrJsUI6I0l/DDeOxF1jtt0i8stuprFyt5Z2bMymdfE9yUfYrhoTIjUf9Z4cWT
+	n+X7OR/OJ6YnTSrT4nRSctLEJomjWiVHhOn9bUM4oGytIBMHUHEKznoXXf3BMIwjtfFwagNGbY0
+	KsKXoUL/g/ZEpJ0ulcO65dp+qcGr2Rd0PYVo44a0cyI/8LjRYyuuxy94A4=
+X-Google-Smtp-Source: AGHT+IHLFP//TWAw/yBKYX6+gEbEQF58TfizkbwG/gULYW5OshgT2udpLFldClPU5BELe/ZzTiG5S5Ud/+EvqzeK4nE=
+X-Received: by 2002:a05:690c:450c:b0:783:7a2a:e1a8 with SMTP id
+ 00721157ae682-7864856b489mr59200267b3.61.1761992779190; Sat, 01 Nov 2025
+ 03:26:19 -0700 (PDT)
+Precedence: list
+Reply-To: dev mail list <dev@suckless.org>
+List-Id: dev mail list <dev.suckless.org>
+List-Unsubscribe: <mailto:dev+unsubscribe@suckless.org>
+List-Subscribe: <mailto:dev+subscribe@suckless.org>
+List-Help: <mailto:dev+help@suckless.org>
+List-Post: <mailto:dev@suckless.org>
+MIME-Version: 1.0
+References: <20251023152806.65a95436@haengemotte.localdomain> <aQXScrep9jIuru1j@cow.codemadness.org>
+In-Reply-To: <aQXScrep9jIuru1j@cow.codemadness.org>
+From: Rob <robpilling@gmail.com>
+Date: Sat, 1 Nov 2025 10:26:08 +0000
+X-Gm-Features: AWmQ_blmXi2BSuXgYeAnDUfFpTfCbG9YVW_m0t-EADkX52K8FetPwQ4Ki-OatMk
+Message-ID: <CAPQ98VXW+QAEO_d6k=B82GONceM=S-RFpH_9Z46vG+ks5FNgTg@mail.gmail.com>
+Subject: Re: [dev] [sbase] grep: global-buffer-overflow
+To: dev mail list <dev@suckless.org>
+Content-Type: text/plain; charset="UTF-8"
+
+On Sat, 1 Nov 2025 at 09:27, Hiltjo Posthuma <hiltjo@codemadness.org> wrote:
+>
+> On Thu, Oct 23, 2025 at 03:28:06PM +0200, Frank Busse wrote:
+> > Hi,
+> >
+> > again found by KLEE:
+> >
+> > ---
+> > $ printf '\x00\x00\n\x00\x00\x00\x00\x00' > A
+> > $ ./grep -xsf A
+> > ERROR: AddressSanitizer: global-buffer-overflow
+> > $ ./grep -wf A
+> > ERROR: AddressSanitizer: global-buffer-overflow
+> > ---
+>
+> Patch contributions would be welcome.
+
+I've got a local patch set rewriting in Rust - fixes all the memory
+issues and improves the speed, where shall I share them?
+
+Kind regards,
+Rob
+
+
+
+From ???@??? Wed Nov  5 14:36:32 2025
+ARC-Seal: i=1; a=rsa-sha256; t=1762074767; cv=none; d=forwardemail.net;
+ s=default;
+ b=a8maUyERkZcnUfXRCuuVXz4U/Z7lV4RmcG7K9u5l6bQurDsR/2PXJ/BiOJz/d+1G3hgfL1EBv
+ mf8ydwTZhZDyKAfzLpoD0gq/iZ06fszJiv49qdQ08MBIPq3LZsOnVlwbklK7HMm1qEn4DCDoUX/
+ PsI4cV8v+s+vUCsYcSBYLQE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=forwardemail.net; h=In-Reply-To: Content-Transfer-Encoding:
+ Content-Type: MIME-Version: List-Post: List-Help: List-Subscribe:
+ List-Unsubscribe: List-Id: Reply-To: References: Message-ID: Subject: To:
+ From: Date; q=dns/txt; s=default; t=1762074767;
+ bh=85sh5Af8auQ0xSqXK6yFzkgRADpZHXQWte/3d1w8zw4=;
+ b=NjRcmImFVygYN8ve1CZrf7kD60dG4hsnUWI5UJvm4dLOIcb7U/yT5QXxzOCjM9j26zl+TpaMu
+ Ao67Xz0KQtiOQjIjxVeo7oZjHjhATfseP1GaWEjbLUW/phJ8646kcpqoA0+T6KnNAVUxK8DlCfy
+ hhaJdjhjWFW9r/RB3yjn84I=
+ARC-Authentication-Results: i=1; mx2.forwardemail.net;
+ dkim=fail (bad signature) header.i=@strahinja.org header.s=default header.a=rsa-sha256 header.b=cjkuCek4;
+ spf=pass (mx2.forwardemail.net: domain of dev+bounces-30732-ethan=rapidcow.org@suckless.org designates 195.201.112.86 as permitted sender)
+ smtp.mailfrom="dev+bounces-30732-ethan=rapidcow.org@suckless.org" smtp.helo=suckless.org;
+ dmarc=fail (p=NONE arc=none) header.from=strahinja.org header.d=strahinja.org;
+ bimi=skipped (message failed DMARC)
+Received: from suckless.org ([195.201.112.86] mx.suckless.org) by
+ mx2.forwardemail.net (Forward Email) with ESMTPS for <ethan@rapidcow.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384); Sun, 02 Nov 2025 09:12:41
+ +0000
+X-Original-To: ethan@rapidcow.org
+X-Forward-Email-Sender: rfc822;
+ dev+bounces-30732-ethan=rapidcow.org@suckless.org, mx.suckless.org,
+ 195.201.112.86
+X-Forward-Email-Version: 1.4.1
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Received: from suckless.org (localhost [127.0.0.1])
+	by mx.suckless.org (OpenSMTPD) with ESMTP id 987497d9
+	for <ethan@rapidcow.org>;
+	Sun, 2 Nov 2025 10:12:41 +0100 (CET)
+Delivered-To: dev@suckless.org
+Received: from host123.dwhost.net (host123.dwhost.net [157.90.15.239])
+	by mx.suckless.org (OpenSMTPD) with ESMTPS id a2d1f7fa (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <dev@suckless.org>;
+	Sun, 2 Nov 2025 10:11:24 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=strahinja.org; s=default; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:To:From:Date:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=85sh5Af8auQ0xSqXK6yFzkgRADpZHXQWte/3d1w8zw4=; b=cjkuCek4Tg+E/QXYX7vIY9lkCd
+	gQHCGkuQEGnzheihDMyXtfkJdviqJ1Jp+GkGrnXAPXQPNPcG5zqM6djkejtcOHXvgW7vNSjdkUM6f
+	Sus8hRZIBurkJktslwWdVTbZldUyE429QTwb051lS0KLL53H26KwMHf2phv8Y1z9Tph7UQjeTIbMu
+	cH/MGra7GkrE8rrhEcyX9B34Jp+bC//HFvvAYcstFSIDVGgFIJjJ/AMY9tucSz19CbRJ1Nj8FL4Kj
+	JqAQSGcyoB78Ts1yLN17L670VMHOnKWbHyimO+fbmZVsDISB9Q/pNAWctI0R+zBlLKrk9pN3+BrZV
+	iIp+HmGA==;
+Received: from [178.148.134.91] (port=47106 helo=localhost)
+	by host123.dwhost.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <sr@strahinja.org>)
+	id 1vFU7F-00000000A1W-055r
+	for dev@suckless.org;
+	Sun, 02 Nov 2025 10:11:24 +0100
+Date: Sun, 2 Nov 2025 10:11:08 +0100
+From: =?utf-8?B?0KHRgtGA0LDRhdC40ZrQsCDQoNCw0LTQuNGb?= <sr@strahinja.org>
+To: dev mail list <dev@suckless.org>
+Subject: Re: [dev] [sbase] grep: global-buffer-overflow
+Message-ID: <v3m7bjfecocfpsoxqlczatpkmo3wj6kjkscyy6m2q46gzcj5uc@426v6ukysdwk>
+Mail-Followup-To: dev mail list <dev@suckless.org>
+References: <20251023152806.65a95436@haengemotte.localdomain>
+ <aQXScrep9jIuru1j@cow.codemadness.org>
+ <CAPQ98VXW+QAEO_d6k=B82GONceM=S-RFpH_9Z46vG+ks5FNgTg@mail.gmail.com>
+Precedence: list
+Reply-To: dev mail list <dev@suckless.org>
+List-Id: dev mail list <dev.suckless.org>
+List-Unsubscribe: <mailto:dev+unsubscribe@suckless.org>
+List-Subscribe: <mailto:dev+subscribe@suckless.org>
+List-Help: <mailto:dev+help@suckless.org>
+List-Post: <mailto:dev@suckless.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPQ98VXW+QAEO_d6k=B82GONceM=S-RFpH_9Z46vG+ks5FNgTg@mail.gmail.com>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - host123.dwhost.net
+X-AntiAbuse: Original Domain - suckless.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - strahinja.org
+X-Get-Message-Sender-Via: host123.dwhost.net: authenticated_id: sr@strahinja.org
+X-Authenticated-Sender: host123.dwhost.net: sr@strahinja.org
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+
+Дана 25/11/01 10:26AM, Rob написа:
+> I've got a local patch set rewriting in Rust - fixes all the memory
+> issues and improves the speed, where shall I share them?
+
+Rust sucks. C or bust.
+
+
+
+From ???@??? Wed Nov  5 14:36:32 2025
+ARC-Seal: i=1; a=rsa-sha256; t=1762077104; cv=none; d=forwardemail.net;
+ s=default;
+ b=NfpwBY2hl+F1Adeq0LFSBmJG/oAz+4Z9UPtjB6Hbh1/ovvX+Zu3WnhFCuCd+scIxEMQidOgE5
+ qOoLjvJcUSfe2gwIzGarnxwcp6Fp2yzRV+0eMgA2aFvxTNcH9ZZFRB5/a5XdPl6ykJOTkjX0Cr0
+ DwwrCbDw99oT1bOYbw68kC8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=forwardemail.net; h=In-Reply-To: Content-Type: MIME-Version: List-Post:
+ List-Help: List-Subscribe: List-Unsubscribe: List-Id: Reply-To:
+ References: Message-ID: Subject: To: From: Date; q=dns/txt; s=default;
+ t=1762077104; bh=C+B6ORLSJpybDcHZspX3LSe68v9ouOfgYUlkagzPn8I=;
+ b=nvNDCLHPUyeR6GWsFvMMur7bJlDHd92Mik3xBLge/7a7j+UVC/8G5mpGMuoxE7w3z8aG5MJDm
+ 2QcBceYi7jNIs87EZcmYc+7BSAkYod5mnI8n11yJ/tIkWrNiQX4Gyy6+X5pgDDptIkrqs4+NREC
+ q1mImqEO0ULfiHjyCgdVMKc=
+ARC-Authentication-Results: i=1; mx1.forwardemail.net;
+ dkim=pass header.i=@codemadness.org header.s=cow header.a=rsa-sha256 header.b=cwT0FpYP;
+ spf=pass (mx1.forwardemail.net: domain of dev+bounces-30733-ethan=rapidcow.org@suckless.org designates 195.201.112.86 as permitted sender)
+ smtp.mailfrom="dev+bounces-30733-ethan=rapidcow.org@suckless.org" smtp.helo=suckless.org;
+ dmarc=pass (p=NONE arc=none) header.from=codemadness.org header.d=codemadness.org;
+ bimi=skipped (too lax DMARC policy)
+Received: from suckless.org ([195.201.112.86] mx.suckless.org) by
+ mx1.forwardemail.net (Forward Email) with ESMTPS for <ethan@rapidcow.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384); Sun, 02 Nov 2025 09:51:39
+ +0000
+X-Original-To: ethan@rapidcow.org
+X-Forward-Email-Sender: rfc822;
+ dev+bounces-30733-ethan=rapidcow.org@suckless.org, mx.suckless.org,
+ 195.201.112.86
+X-Forward-Email-Version: 1.4.1
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Received: from suckless.org (localhost [127.0.0.1])
+	by mx.suckless.org (OpenSMTPD) with ESMTP id f6728697
+	for <ethan@rapidcow.org>;
+	Sun, 2 Nov 2025 10:51:39 +0100 (CET)
+Delivered-To: dev@suckless.org
+Received: from cow.codemadness.org (cow.codemadness.org [149.210.185.89])
+	by mx.suckless.org (OpenSMTPD) with ESMTPS id 8d65c297 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <dev@suckless.org>;
+	Sun, 2 Nov 2025 10:50:27 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; s=cow; bh=pX/rUs77goKc6Il
+	2MdU9+nGomskhgfiuB5a5soH/Dkg=; h=in-reply-to:references:subject:to:
+	from:date; d=codemadness.org; b=cwT0FpYPJ3gIsfJaAOpGnJkBr2xwIxbii0Rx8H
+	EHw7iz+U8KVzSNAoJFRtARI4gvkJCxh14EcprzGIftA1lUL+B1zdV/x5sM7HD1W4k5JgHj
+	bEkoAct9C4326WNVKyeHQcjFRloAh/nski3dpf/RpyKhByU1QKi2p1dMVyvE5WQiEf0Om7
+	mYp10v3/e/OZ8o1xUMNSqks3sMdFpTxmlegLJoTDoRZ+8kLylwul4t9xKPitWNNtQT3kQN
+	9qTGziRHQA2V4CbXsvbD9kkynKHZvCOvVshd4BGayKfHoJlarFke6pi8xOJW93tuT0Xa0j
+	TFM2CzuoHPxIrfdc+3twY9UF7aP2s9mla2eoR2JvxR2t12QRUQkfM9xCBjNhkIhyG6KXeY
+	4sxu1sLbiJGLhXi1EtGIEg84qwj/f6geBlNrukOhHAc3ibbQvFC4j6LCrXuqBx+7ZN5O2S
+	sryUGOAHrItG2clVZE7Y+dvXo87+mgXOUQA+0CuhEQavZtaXnEI3DhxtMckSnk0sIRxeQW
+	e/MBBC6ixM9czm1ccbnSz2VFV0/BKNKwtDpxUkBh/NuGXcjAoEwG/ukEhbc3pN2gru1uT0
+	DAIv3909Kqqahi2T0ZWF9TaQoPwRDIMMpYoZH5CnWHMN/TPHqEet1JwS6P+8ENrT9IGNZA
+	bDheJKgKhZMEjkg=
+Received: from cow.codemadness.org (localhost [127.0.0.1])
+	by cow.codemadness.org (OpenSMTPD) with ESMTP id e040e536
+	for <dev@suckless.org>;
+	Sun, 2 Nov 2025 10:50:26 +0100 (CET)
+Received: from localhost (cow.codemadness.org [local])
+	by cow.codemadness.org (OpenSMTPD) with ESMTPA id 22d2d891
+	for <dev@suckless.org>;
+	Sun, 2 Nov 2025 10:50:26 +0100 (CET)
+Date: Sun, 2 Nov 2025 10:50:26 +0100
+From: Hiltjo Posthuma <hiltjo@codemadness.org>
+To: dev mail list <dev@suckless.org>
+Subject: Re: [dev] [sbase] grep: global-buffer-overflow
+Message-ID: <aQcpYpUu173NH3Au@cow.codemadness.org>
+References: <20251023152806.65a95436@haengemotte.localdomain>
+ <aQXScrep9jIuru1j@cow.codemadness.org>
+ <CAPQ98VXW+QAEO_d6k=B82GONceM=S-RFpH_9Z46vG+ks5FNgTg@mail.gmail.com>
+Precedence: list
+Reply-To: dev mail list <dev@suckless.org>
+List-Id: dev mail list <dev.suckless.org>
+List-Unsubscribe: <mailto:dev+unsubscribe@suckless.org>
+List-Subscribe: <mailto:dev+subscribe@suckless.org>
+List-Help: <mailto:dev+help@suckless.org>
+List-Post: <mailto:dev@suckless.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPQ98VXW+QAEO_d6k=B82GONceM=S-RFpH_9Z46vG+ks5FNgTg@mail.gmail.com>
+
+On Sat, Nov 01, 2025 at 10:26:08AM +0000, Rob wrote:
+> On Sat, 1 Nov 2025 at 09:27, Hiltjo Posthuma <hiltjo@codemadness.org> wrote:
+> >
+> > On Thu, Oct 23, 2025 at 03:28:06PM +0200, Frank Busse wrote:
+> > > Hi,
+> > >
+> > > again found by KLEE:
+> > >
+> > > ---
+> > > $ printf '\x00\x00\n\x00\x00\x00\x00\x00' > A
+> > > $ ./grep -xsf A
+> > > ERROR: AddressSanitizer: global-buffer-overflow
+> > > $ ./grep -wf A
+> > > ERROR: AddressSanitizer: global-buffer-overflow
+> > > ---
+> >
+> > Patch contributions would be welcome.
+> 
+> I've got a local patch set rewriting in Rust - fixes all the memory
+> issues and improves the speed, where shall I share them?
+> 
+> Kind regards,
+> Rob
+> 
+
+Feel free to share them.
+
+-- 
+Kind regards,
+Hiltjo
+
+
+
+From ???@??? Wed Nov  5 14:36:33 2025
+ARC-Seal: i=1; a=rsa-sha256; t=1762186496; cv=none; d=forwardemail.net;
+ s=default;
+ b=VfLabCONVb89fgDzsXbcc0vbfIuBJ9FqYitr9zIwAFW8T3PhC2o0L7k0qW7rLIkeJxSEs/rS3
+ xTYWj+5wmZ88iRbbVrD3MPf9speI59S87ErC6hcgmndt3ss06u6A3sNSn1KmAu/WVw9GcTxYBAD
+ DUhUHQP/b82j4J8/4g/UDi0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=forwardemail.net; h=Content-Type: To: Subject: Message-ID: Date: From:
+ In-Reply-To: References: MIME-Version: List-Post: List-Help:
+ List-Subscribe: List-Unsubscribe: List-Id: Reply-To; q=dns/txt; s=default;
+ t=1762186496; bh=yMmAAMcP+gvpGN55rssShE3pebzm58l+MVFeY/xrp6w=;
+ b=E3l7ucKJsLS4ivHyj/x7NM6f9bmxAHp1kla1NjidX2wEZZDUo/dvZepALqxDLi/4JHRzoRvfb
+ pESUY6gLucndEH6DJmZzgYUq+ZvCkusIhFTwTZKLo60COZo4McU/d71j2xr3JRn7Z1f7qKxuONu
+ 7HHxMC9mb2A5lU2fgBjYKkM=
+ARC-Authentication-Results: i=1; mx2.forwardemail.net;
+ dkim=fail (bad signature) header.i=@gmail.com header.s=20230601 header.a=rsa-sha256 header.b=mSiIlCZu;
+ spf=pass (mx2.forwardemail.net: domain of dev+bounces-30741-ethan=rapidcow.org@suckless.org designates 195.201.112.86 as permitted sender)
+ smtp.mailfrom="dev+bounces-30741-ethan=rapidcow.org@suckless.org" smtp.helo=suckless.org;
+ dmarc=fail (p=NONE sp=QUARANTINE arc=none) header.from=gmail.com header.d=gmail.com;
+ bimi=skipped (message failed DMARC)
+Received: from suckless.org ([195.201.112.86] mx.suckless.org) by
+ mx2.forwardemail.net (Forward Email) with ESMTPS for <ethan@rapidcow.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384); Mon, 03 Nov 2025 16:14:52
+ +0000
+X-Original-To: ethan@rapidcow.org
+X-Forward-Email-Sender: rfc822;
+ dev+bounces-30741-ethan=rapidcow.org@suckless.org, mx.suckless.org,
+ 195.201.112.86
+X-Forward-Email-Version: 1.4.1
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Received: from suckless.org (localhost [127.0.0.1])
+	by mx.suckless.org (OpenSMTPD) with ESMTP id 7ebbfed4
+	for <ethan@rapidcow.org>;
+	Mon, 3 Nov 2025 17:14:51 +0100 (CET)
+Delivered-To: dev@suckless.org
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	by mx.suckless.org (OpenSMTPD) with ESMTPS id a167c77f (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <dev@suckless.org>;
+	Mon, 3 Nov 2025 17:12:24 +0100 (CET)
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-88f239686f2so504391985a.0
+        for <dev@suckless.org>; Mon, 03 Nov 2025 08:12:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762186343; x=1762791143; darn=suckless.org;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yMmAAMcP+gvpGN55rssShE3pebzm58l+MVFeY/xrp6w=;
+        b=mSiIlCZue7qe13YEQoUaLqroJAIrAZUBVLRZExpdE3m1LXYdbWKRfR+qJmpnAzzkZL
+         JwrvwBpa5DUOpZlHz1yx90x8cMOc5YPgUYymg97IoqzYPTFE7xd7wFTcvOkXUW96XEyC
+         odS6uAZuLoKPB0Wnh27oV8Peo5GObc4BdmUGwr8T1CeZD2FcZ2itEJv2g2jSPdZOOt/e
+         tTxIwrNQc1zn0AL6ugCZ6EfLavBjCSnxZOS+oVYBiAeb/zH1ws0IKS7hOilnFaiPP77E
+         VQy8+8jyQRBwV0cKlVYDBqITa2crX9QN5ifkK3QU3xzoanAAi92hXqfvmzXO9+MgjgOD
+         AH6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762186343; x=1762791143;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yMmAAMcP+gvpGN55rssShE3pebzm58l+MVFeY/xrp6w=;
+        b=n4g6R7p61sfcnNoTvwxh2zH8nmksqSoL6MlCDotSD0dgqCVl6TWUBrKS+B782QSUP8
+         E/hzttOnjJbdM5FridWC/QvZ1+ZJvwBIazvfQkORByoDdnWTKsaEq1BJ3GJDNRwxip/f
+         qkKdgvI2yrw1EnqqKKLRifns8io43FGuGIT1OFPG9xN9frI5XdTs+oLKHvswddI0XiYk
+         fUGkHM8v8go3zjaXEEy53yoYmS3msiyzK5eA+OJXz4dhpMHQlOVTTMN4nAkkmfXXN7RB
+         SXBtha3f1gdTyZVqg0e8K2d9dJMTjKyQHFcm4da43/x405uXExVRpqG3HXb1txHI0ulV
+         pyNQ==
+X-Gm-Message-State: AOJu0YzpxGN70Od3QIaPzLMAQXJRy7qpn+LcWGxMXLJq0ZbbTNCtJ8AB
+	jMwAjJkBZdiqy6ArjrXQGunMhsuFrabmz4Zy8evWVE5bTGuLDCv+oJF+ivlcLGBstuUib2Jj4Jm
+	ffP8uzNom37nmVFzv8ciuP+mZgKZbDL5qUvJF6yE=
+X-Gm-Gg: ASbGncu/kBeCz1AxY9fW4YugjKdqyOgIS+ARo0p6dt68cGryPpp29i1KmXTSVrBhWb5
+	21yoW+KrpkiT/Alm3gaBNf4ODcc3JmsAnlB9si2HuJCTjoggRMBBI9MRpzag+fVjwRNQuoCkpgw
+	9kSlflpwFuXHw1kRqUz6DX896VPrhpbQFMl1GIuA+yStRZ5xKbaJoxDWY4yxOmik7AFfbyJlmFT
+	5FK4py7Gmivlj3vDaHxO+AhczUQAUOVpvhEXn75NWfWn85Xk/1VzTxSPYsSrhoWU5fq7u6mNnyv
+	OscDsMIewKHWA4fUmjc=
+X-Google-Smtp-Source: AGHT+IHXzuTXQmjP5Txc2Lhgqq7zrp0V/5S7bS1ZepE33e3cODpV3/6SHL+kO0UyX5kI/LN2zlApXeWeOsF4wtUbRDs=
+X-Received: by 2002:a17:903:2285:b0:264:70e9:dcb1 with SMTP id
+ d9443c01a7336-2951a4bf845mr152063175ad.56.1762185848627; Mon, 03 Nov 2025
+ 08:04:08 -0800 (PST)
+Precedence: list
+Reply-To: dev mail list <dev@suckless.org>
+List-Id: dev mail list <dev.suckless.org>
+List-Unsubscribe: <mailto:dev+unsubscribe@suckless.org>
+List-Subscribe: <mailto:dev+subscribe@suckless.org>
+List-Help: <mailto:dev+help@suckless.org>
+List-Post: <mailto:dev@suckless.org>
+MIME-Version: 1.0
+References: <20251023152806.65a95436@haengemotte.localdomain>
+ <aQXScrep9jIuru1j@cow.codemadness.org> <CAPQ98VXW+QAEO_d6k=B82GONceM=S-RFpH_9Z46vG+ks5FNgTg@mail.gmail.com>
+ <aQcpYpUu173NH3Au@cow.codemadness.org>
+In-Reply-To: <aQcpYpUu173NH3Au@cow.codemadness.org>
+From: Carlos Torres <vlaadbrain@gmail.com>
+Date: Mon, 3 Nov 2025 11:03:56 -0500
+X-Gm-Features: AWmQ_bkHGHmUsHWrKodhnY6ujL7Ia0LwH4uYoSSXEsq5vI8A6O4mqkMAUs3qAss
+Message-ID: <CAF6x8TO5xH9z6P7rrrNC2LmVGPYswTy33Sut3xivoOJqFzUtWg@mail.gmail.com>
+Subject: Re: [dev] [sbase] grep: global-buffer-overflow
+To: dev mail list <dev@suckless.org>
+Content-Type: text/plain; charset="UTF-8"
+
+also another backtrace and memory dump for the other grep command 'grep -wf A'
+
+=================================================================
+==114878==ERROR: AddressSanitizer: global-buffer-overflow on address
+0x55555555a022 at pc 0x555555557621 bp 0x7fffffffd9f0 sp
+0x7fffffffd9e0
+READ of size 1 at 0x55555555a022 thread T0
+    #0 0x555555557620 in addpattern /home/cjt/src/sbase/grep.c:68
+    #1 0x555555557846 in addpatternfile /home/cjt/src/sbase/grep.c:96
+    #2 0x55555555834a in main /home/cjt/src/sbase/grep.c:213
+    #3 0x7ffff7427674  (/usr/lib/libc.so.6+0x27674) (BuildId:
+4fe011c94a88e8aeb6f2201b9eb369f42b4a1e9e)
+    #4 0x7ffff7427728 in __libc_start_main
+(/usr/lib/libc.so.6+0x27728) (BuildId:
+4fe011c94a88e8aeb6f2201b9eb369f42b4a1e9e)
+    #5 0x5555555572e4 in _start (/home/cjt/src/sbase/grep+0x32e4)
+(BuildId: dcb36777af50b79d8f264dfbe66653d14e5aafe5)
+
+0x55555555a022 is located 0 bytes after global variable '*.LC0'
+defined in 'grep.c' (0x55555555a020) of size 2
+  '*.LC0' is ascii string '^'
+0x55555555a022 is located 62 bytes before global variable '*.LC1'
+defined in 'grep.c' (0x55555555a060) of size 1
+  '*.LC1' is ascii string ''
+SUMMARY: AddressSanitizer: global-buffer-overflow
+/home/cjt/src/sbase/grep.c:68 in addpattern
+Shadow bytes around the buggy address:
+  0x555555559d80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x555555559e00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x555555559e80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x555555559f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x555555559f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x55555555a000: 00 00 00 00[02]f9 f9 f9 f9 f9 f9 f9 01 f9 f9 f9
+  0x55555555a080: f9 f9 f9 f9 02 f9 f9 f9 f9 f9 f9 f9 07 f9 f9 f9
+  0x55555555a100: f9 f9 f9 f9 02 f9 f9 f9 f9 f9 f9 f9 03 f9 f9 f9
+  0x55555555a180: f9 f9 f9 f9 02 f9 f9 f9 f9 f9 f9 f9 03 f9 f9 f9
+  0x55555555a200: f9 f9 f9 f9 00 00 01 f9 f9 f9 f9 f9 00 04 f9 f9
+  0x55555555a280: f9 f9 f9 f9 04 f9 f9 f9 f9 f9 f9 f9 05 f9 f9 f9
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==114878==ABORTING
+[Inferior 1 (process 114878) exited with code 01]
+(gdb)
+
+
+
+From ???@??? Wed Nov  5 14:36:33 2025
+ARC-Seal: i=1; a=rsa-sha256; t=1762235439; cv=none; d=forwardemail.net;
+ s=default;
+ b=GPHsYodh0Pj8REfucgj8mYeFLpNyPiSC5Jys+olor5KvfG0ZSDSVTrVS2gTnO0+Kd9cYa6GN8
+ r0ZCW+E+dyfs5argQcDtuTpcqMHJc/BCIa5c8Z7iohzw4IMK14zbdU7vfZDI8hQuDtiEDUt33ls
+ cbFowJQZlnXnZnRoIMUufSI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=forwardemail.net; h=Content-Type: To: Subject: Message-ID: Date: From:
+ In-Reply-To: References: MIME-Version: List-Post: List-Help:
+ List-Subscribe: List-Unsubscribe: List-Id: Reply-To; q=dns/txt; s=default;
+ t=1762235439; bh=RptA0vexxHzc1FRfKUXiqQf1Ko8u3jfEAk/u/sfK3+A=;
+ b=EcHbI+ur0NSb6H31tZ14jr36QZtj/1XSpLFbhRtINgfrLTXwxq+37yWQmnbkyHRen934Yd/BN
+ Rq2US2ormNZUr2oK4bQ2RGI500tqtoMtlvcKwYbzrIo1xaU0AngSgLICSEUBGQUKzKwIuubfqMp
+ hXfZkaJV+gQpLA2dZtHai9o=
+ARC-Authentication-Results: i=1; mx1.forwardemail.net;
+ dkim=fail (bad signature) header.i=@gmail.com header.s=20230601 header.a=rsa-sha256 header.b="AyNIMX/+";
+ spf=pass (mx1.forwardemail.net: domain of dev+bounces-30746-ethan=rapidcow.org@suckless.org designates 195.201.112.86 as permitted sender)
+ smtp.mailfrom="dev+bounces-30746-ethan=rapidcow.org@suckless.org" smtp.helo=suckless.org;
+ dmarc=fail (p=NONE sp=QUARANTINE arc=none) header.from=gmail.com header.d=gmail.com;
+ bimi=skipped (message failed DMARC)
+Received: from suckless.org ([195.201.112.86] mx.suckless.org) by
+ mx1.forwardemail.net (Forward Email) with ESMTPS for <ethan@rapidcow.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384); Tue, 04 Nov 2025 05:50:36
+ +0000
+X-Original-To: ethan@rapidcow.org
+X-Forward-Email-Sender: rfc822;
+ dev+bounces-30746-ethan=rapidcow.org@suckless.org, mx.suckless.org,
+ 195.201.112.86
+X-Forward-Email-Version: 1.4.1
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Received: from suckless.org (localhost [127.0.0.1])
+	by mx.suckless.org (OpenSMTPD) with ESMTP id a0eb50ee
+	for <ethan@rapidcow.org>;
+	Tue, 4 Nov 2025 06:50:36 +0100 (CET)
+Delivered-To: dev@suckless.org
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	by mx.suckless.org (OpenSMTPD) with ESMTPS id 25f21d61 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <dev@suckless.org>;
+	Tue, 4 Nov 2025 06:48:03 +0100 (CET)
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7c28bf230feso5411473a34.0
+        for <dev@suckless.org>; Mon, 03 Nov 2025 21:48:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762235281; x=1762840081; darn=suckless.org;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RptA0vexxHzc1FRfKUXiqQf1Ko8u3jfEAk/u/sfK3+A=;
+        b=AyNIMX/+4FxiqAnv7lar9bomteiZSCG9K5uEtKDtR6QaXiMud97qQxPjk6OtRV32T/
+         r7t772sAkFPXjF0U3oaiIprZJ8Kem1Yo+kizf1UKkz/QDdXLsdtYwWucwA/DalIQPZ0f
+         IoQixEY4OSkRkreXdh+VImuywNEX7ngFMwUnV2wPFZlO3VcN9+AGhFPkDMtJCICQw7yL
+         P58na6SG2W2sV2hMip9HFZkl9dM2+ieZeNeI5YFRXBIM18wFGDikuyMiL0DrCW3OE1Y+
+         q0Kv5ykRjhkz/iF+/yP8wK5fqX1seVSgjwl9gGbCWV+2+d0HB31HmuRPvVGuL4QGWPF2
+         ztvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762235281; x=1762840081;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RptA0vexxHzc1FRfKUXiqQf1Ko8u3jfEAk/u/sfK3+A=;
+        b=NdNU7Oz1MuUrao4woQ/VWVsDnOz/ChSdkJCr0iIHagISQ80MxpmETf8mlHyu60rLlW
+         NO6RugjkF94qgidsSZ+hBorPdMbhbzOLMgFIxz/xs/1mzRo0WkXblGQVWLDCZzuft/PQ
+         d0c1UcfkZmPe+QU4b8TNOGmgwD8xD4wMrwBOp8vW20KUurIpfK3Li67AIQyhY76hwWSF
+         rCSVSa/SH3Xj5BUn93AE6ZCf54xHgnxLFJQ/Or52vVmRNSljsgsZLmvd5SAvL76s+uPE
+         DKnpGPjABZc28sdk6uD8Zkt/w0QWIamKi0VCuqIs4HNO8SiMYsM+7qOI4OUegE7wqk33
+         +t3g==
+X-Gm-Message-State: AOJu0YzXcME3SZ06RQNQ1oq4iFu0UyR0TxTfbFIg/lPjpBsdEd+sGFNc
+	gF5Y+iJtF6wV2pilKW5bxt2XoLKDlC8GL5cDinqcofXTweAogJjxEg995Ry0pSt2tt0jDK1TTak
+	IS+UTpEm0Y3A3NmAOt0JDkiIvBdn3o1STgaw/Y+Y=
+X-Gm-Gg: ASbGncsvibOc9kZUEGuin0rzC+xi2LG3nEYRZB0I+lDdCQrvJrQZe6qoqc34jf5+xq1
+	aYsv9g5552e8Of5olTJItu0ooKqThRKLygxFkHf64oSAxtg/+iZuFcJ6JivlFQQ5Y5f6SZpKASI
+	ZDrB42znJy/oKgUYcMWuju9PPhd/V0r/yBwGgjUqOtwaP9HcCGQ8BSCjAJBAbGuPy7LtTLB6cr6
+	NTAb5dn1YzGO9av+Tn8sEHT8G9yHQOoxsvv7Qz6wjL8XJyCSgrB43jci086o97OL9FklHFYCUoE
+	Bs354CWyRX5e1Pf39Hk=
+X-Google-Smtp-Source: AGHT+IGVj3AkYjEhcylEtyGl8f2ze+F+aA+hrKBiGUcyTkGbYsfU8p33e7T6Abg1tOOwn1V7Zv9k5A7NNYRAbnSCJBQ=
+X-Received: by 2002:a17:902:db0f:b0:295:3141:4d54 with SMTP id
+ d9443c01a7336-2953141500bmr146937615ad.18.1762185246409; Mon, 03 Nov 2025
+ 07:54:06 -0800 (PST)
+Precedence: list
+Reply-To: dev mail list <dev@suckless.org>
+List-Id: dev mail list <dev.suckless.org>
+List-Unsubscribe: <mailto:dev+unsubscribe@suckless.org>
+List-Subscribe: <mailto:dev+subscribe@suckless.org>
+List-Help: <mailto:dev+help@suckless.org>
+List-Post: <mailto:dev@suckless.org>
+MIME-Version: 1.0
+References: <20251023152806.65a95436@haengemotte.localdomain>
+ <aQXScrep9jIuru1j@cow.codemadness.org> <CAPQ98VXW+QAEO_d6k=B82GONceM=S-RFpH_9Z46vG+ks5FNgTg@mail.gmail.com>
+ <aQcpYpUu173NH3Au@cow.codemadness.org>
+In-Reply-To: <aQcpYpUu173NH3Au@cow.codemadness.org>
+From: Carlos Torres <vlaadbrain@gmail.com>
+Date: Mon, 3 Nov 2025 10:53:54 -0500
+X-Gm-Features: AWmQ_bkULJvlFYLKUq6HCRzNVn8XSEPXqGhl56S-0aV4f_Ti6lKLqkFsmNEAt-8
+Message-ID: <CAF6x8TOYSxJ6JJpqgq4WvP8eTfRGQe4hduuQYAus=ix90T2HNA@mail.gmail.com>
+Subject: Re: [dev] [sbase] grep: global-buffer-overflow
+To: dev mail list <dev@suckless.org>
+Content-Type: text/plain; charset="UTF-8"
+
+for the benefit of the thread, here is the ASAN backtrace and memory
+dump with 'grep -xsf A'
+
+=================================================================
+==114090==ERROR: AddressSanitizer: global-buffer-overflow on address
+0x55555555a022 at pc 0x5555555574a1 bp 0x7fffffffd9f0 sp
+0x7fffffffd9e0
+READ of size 1 at 0x55555555a022 thread T0
+    #0 0x5555555574a0 in addpattern /home/cjt/src/sbase/grep.c:60
+    #1 0x555555557846 in addpatternfile /home/cjt/src/sbase/grep.c:96
+    #2 0x55555555834a in main /home/cjt/src/sbase/grep.c:213
+    #3 0x7ffff7427674  (/usr/lib/libc.so.6+0x27674) (BuildId:
+4fe011c94a88e8aeb6f2201b9eb369f42b4a1e9e)
+    #4 0x7ffff7427728 in __libc_start_main
+(/usr/lib/libc.so.6+0x27728) (BuildId:
+4fe011c94a88e8aeb6f2201b9eb369f42b4a1e9e)
+    #5 0x5555555572e4 in _start (/home/cjt/src/sbase/grep+0x32e4)
+(BuildId: dcb36777af50b79d8f264dfbe66653d14e5aafe5)
+
+0x55555555a022 is located 0 bytes after global variable '*.LC0'
+defined in 'grep.c' (0x55555555a020) of size 2
+  '*.LC0' is ascii string '^'
+0x55555555a022 is located 62 bytes before global variable '*.LC1'
+defined in 'grep.c' (0x55555555a060) of size 1
+  '*.LC1' is ascii string ''
+SUMMARY: AddressSanitizer: global-buffer-overflow
+/home/cjt/src/sbase/grep.c:60 in addpattern
+Shadow bytes around the buggy address:
+  0x555555559d80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x555555559e00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x555555559e80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x555555559f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x555555559f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x55555555a000: 00 00 00 00[02]f9 f9 f9 f9 f9 f9 f9 01 f9 f9 f9
+  0x55555555a080: f9 f9 f9 f9 02 f9 f9 f9 f9 f9 f9 f9 07 f9 f9 f9
+  0x55555555a100: f9 f9 f9 f9 02 f9 f9 f9 f9 f9 f9 f9 03 f9 f9 f9
+  0x55555555a180: f9 f9 f9 f9 02 f9 f9 f9 f9 f9 f9 f9 03 f9 f9 f9
+  0x55555555a200: f9 f9 f9 f9 00 00 01 f9 f9 f9 f9 f9 00 04 f9 f9
+  0x55555555a280: f9 f9 f9 f9 04 f9 f9 f9 f9 f9 f9 f9 05 f9 f9 f9
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==114090==ABORTING
+[Inferior 1 (process 114090) exited with code 01]
+(gdb)
+
+
+
+From ???@??? Wed Nov  5 14:36:33 2025
+ARC-Seal: i=1; a=rsa-sha256; t=1762334981; cv=none; d=forwardemail.net;
+ s=default;
+ b=Que2jn2/gK7Vcxs+pUPzd5WCMZVAmIzI2LY4fQw2UbyyCE1Z3eKk0rIyhb/i6izryfHubhq03
+ ZtjUEJgPMcnunWaLUFQl0Y3UoS8tC7gCW0f1YT0cqHIDh6kVajIyR9NtXLYTuRm3457/x2kRuXe
+ vWolITK/umcHOxsWlYSENgc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=forwardemail.net; h=In-Reply-To: Content-Type: MIME-Version: List-Post:
+ List-Help: List-Subscribe: List-Unsubscribe: List-Id: Reply-To:
+ References: Message-ID: Subject: To: From: Date; q=dns/txt; s=default;
+ t=1762334981; bh=1K5YIW01jH53OeONklCSGKUs4nTNfJE0c0Vq0W9jjmg=;
+ b=HecU4pvxM/e43ctPhrIrJ0TbWZkUTB0kpX/1QNjbpySohpKI0kQgZ3ELlbwUSsdNDWvRRN/W1
+ Gj1QQzbOkCGtqBDTaIPHQyxjqTLH7jSsTpBwixXh3Rhmk8J8QpoFHA71b5gwCXAncqui8ogk2kC
+ o/cW3jEBn/a14qvx/Qv/X9w=
+ARC-Authentication-Results: i=1; mx2.forwardemail.net;
+ dkim=none (message not signed);
+ spf=pass (mx2.forwardemail.net: domain of dev+bounces-30748-ethan=rapidcow.org@suckless.org designates 195.201.112.86 as permitted sender)
+ smtp.mailfrom="dev+bounces-30748-ethan=rapidcow.org@suckless.org" smtp.helo=suckless.org;
+ dmarc=none header.from=shike2.net;
+ bimi=skipped (DMARC not enabled)
+Received: from suckless.org ([195.201.112.86] mx.suckless.org) by
+ mx2.forwardemail.net (Forward Email) with ESMTPS for <ethan@rapidcow.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384); Wed, 05 Nov 2025 09:29:36
+ +0000
+X-Original-To: ethan@rapidcow.org
+X-Forward-Email-Sender: rfc822;
+ dev+bounces-30748-ethan=rapidcow.org@suckless.org, mx.suckless.org,
+ 195.201.112.86
+X-Forward-Email-Version: 1.4.3
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Received: from suckless.org (localhost [127.0.0.1])
+	by mx.suckless.org (OpenSMTPD) with ESMTP id 86e42316
+	for <ethan@rapidcow.org>;
+	Wed, 5 Nov 2025 10:29:36 +0100 (CET)
+Delivered-To: dev@suckless.org
+Received: from simple-cc.org (simple-cc.org [46.23.94.210])
+	by mx.suckless.org (OpenSMTPD) with ESMTPS id 627313c3 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <dev@suckless.org>;
+	Wed, 5 Nov 2025 10:28:05 +0100 (CET)
+Received: from localhost (simple-cc.org [local])
+	by simple-cc.org (OpenSMTPD) with ESMTPA id 46232a6b
+	for <dev@suckless.org>;
+	Wed, 5 Nov 2025 10:28:04 +0100 (CET)
+Date: Wed, 5 Nov 2025 10:28:03 +0100
+From: "Roberto E. Vargas Caballero" <k0ga@shike2.net>
+To: dev mail list <dev@suckless.org>
+Subject: Re: [dev] [sbase] grep: global-buffer-overflow
+Message-ID: <aQsYo09NRHfdn8k0@simple-cc.org>
+References: <20251023152806.65a95436@haengemotte.localdomain>
+Precedence: list
+Reply-To: dev mail list <dev@suckless.org>
+List-Id: dev mail list <dev.suckless.org>
+List-Unsubscribe: <mailto:dev+unsubscribe@suckless.org>
+List-Subscribe: <mailto:dev+subscribe@suckless.org>
+List-Help: <mailto:dev+help@suckless.org>
+List-Post: <mailto:dev@suckless.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251023152806.65a95436@haengemotte.localdomain>
+
+On Thu, Oct 23, 2025 at 03:28:06PM +0200, Frank Busse wrote:
+> Hi,
+> 
+> again found by KLEE:
+> 
+> ---
+> $ printf '\x00\x00\n\x00\x00\x00\x00\x00' > A
+> $ ./grep -xsf A
+> ERROR: AddressSanitizer: global-buffer-overflow
+> $ ./grep -wf A
+> ERROR: AddressSanitizer: global-buffer-overflow
+
+The following patch should solve these problems. While we were
+analyzing the problem it was discovered that the flag -x doesn't
+work well, but that is a different topic to be addessed in a different
+commit.
+
+-- >8 --
+
+>From e285ed315fb47fb3775c4ccdcece24b61ed5403b Mon Sep 17 00:00:00 2001
+From: "Roberto E. Vargas Caballero" <k0ga@shike2.net>
+Date: Wed, 5 Nov 2025 09:59:44 +0100
+Subject: [PATCH] grep: Don't modify constant strings
+
+The pattern pointer was assigned to a constant string and later it was
+modified, which is UB. But even worse, as we were trusting the patlen
+parameter received, patlen was meaningless after that assignment.
+
+The addpattern() had many problems because it trusted the patlen
+parameter, but in some places it used string functions that depend of
+having a NUL character creating many problems when embedded NUL characters
+were found in the pattern. As mandated by POSIX in [1]:
+
+	The interfaces specified in POSIX.1-2017 do not permit the
+	inclusion of a NUL character in an RE or in the string to be
+	matched. If during the operation of a standard utility a NUL
+	is included in the text designated to be matched, that NUL may
+	designate the end of the text string for the purposes of matching.
+
+so, the simples solution is just discard the patlen parameter and call
+strlen() in addpattern() and use that as size of the pattern.
+
+[1] https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html
+---
+ grep.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
+
+diff --git a/grep.c b/grep.c
+index 1c97807..9b9f5a9 100644
+--- a/grep.c
++++ b/grep.c
+@@ -10,7 +10,7 @@
+ 
+ enum { Match = 0, NoMatch = 1, Error = 2 };
+ 
+-static void addpattern(const char *, size_t);
++static void addpattern(const char *);
+ static void addpatternfile(FILE *);
+ static int grep(FILE *, const char *);
+ 
+@@ -37,20 +37,19 @@ struct pattern {
+ static SLIST_HEAD(phead, pattern) phead;
+ 
+ static void
+-addpattern(const char *pattern, size_t patlen)
++addpattern(const char *pattern)
+ {
+ 	struct pattern *pnode;
+-	char *tmp;
++	char *tmp, beg[] = "^";
+ 	int bol, eol;
+-	size_t len;
+-
+-	if (!patlen)
+-		return;
++	size_t len, patlen;
+ 
+ 	/* a null BRE/ERE matches every line */
+-	if (!Fflag)
++	if (!Fflag) {
+ 		if (pattern[0] == '\0')
+-			pattern = "^";
++			pattern = beg;
++	}
++	patlen = strlen(pattern);
+ 
+ 	if (!Fflag && xflag) {
+ 		tmp = enmalloc(Error, patlen + 3);
+@@ -93,7 +92,7 @@ addpatternfile(FILE *fp)
+ 	while ((len = getline(&buf, &size, fp)) > 0) {
+ 		if (len > 0 && buf[len - 1] == '\n')
+ 			buf[len - 1] = '\0';
+-		addpattern(buf, (size_t)len);
++		addpattern(buf);
+ 	}
+ 	if (ferror(fp))
+ 		enprintf(Error, "read error:");
+-- 
+2.45.4
+
+
+
+
+From ???@??? Wed Nov  5 14:36:33 2025
+ARC-Seal: i=1; a=rsa-sha256; t=1762337772; cv=none; d=forwardemail.net;
+ s=default;
+ b=Yhz3YVPzYEeuRhlu/J5Ejj3sYkFkxgvPZbly3Ug09emQWGFK9IQi0kEWFZrVApsaoWhst9wTA
+ edvX6SZ/pZOJqwSz9XfuR2qCiQaPZcg8UmEbniWRCI+zrqM33LA+/XHUE7P54/sXF8GQWZLFXKn
+ RJ1WYCKWNm134a9MHPJ6Lm8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=forwardemail.net; h=Content-Transfer-Encoding: Content-Type:
+ In-Reply-To: From: References: To: Subject: MIME-Version: List-Post:
+ List-Help: List-Subscribe: List-Unsubscribe: List-Id: Reply-To: Date:
+ Message-ID; q=dns/txt; s=default; t=1762337772;
+ bh=Uy3D+oui2MgcblwEndUHO7IgayeL58yIEGNlCwwCxwo=;
+ b=JWngamtpuo2phJziYnSIAp5IfGbYdmNGMg5lgqKp/d7CbqWQMmD8mxoDJGlSrajfeRzAzf45r
+ +o+Ee8Xg83AtJmJRYKQ3sTdC+uoJIh3lO28yQrx350rZ5lFsDJZARiYZommviBJCzCkA+ZUDkS9
+ G2IJIzkbp7ocsBhMFy5WpwM=
+ARC-Authentication-Results: i=1; mx2.forwardemail.net;
+ dkim=fail (bad signature) header.i=@inz.fi header.s=inz header.a=rsa-sha256 header.b=XbMNzPpY;
+ spf=pass (mx2.forwardemail.net: domain of dev+bounces-30750-ethan=rapidcow.org@suckless.org designates 195.201.112.86 as permitted sender)
+ smtp.mailfrom="dev+bounces-30750-ethan=rapidcow.org@suckless.org" smtp.helo=suckless.org;
+ dmarc=none header.from=inz.fi;
+ bimi=skipped (DMARC not enabled)
+Received: from suckless.org ([195.201.112.86] mx.suckless.org) by
+ mx2.forwardemail.net (Forward Email) with ESMTPS for <ethan@rapidcow.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384); Wed, 05 Nov 2025 10:16:05
+ +0000
+X-Original-To: ethan@rapidcow.org
+X-Forward-Email-Sender: rfc822;
+ dev+bounces-30750-ethan=rapidcow.org@suckless.org, mx.suckless.org,
+ 195.201.112.86
+X-Forward-Email-Version: 1.4.3
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Received: from suckless.org (localhost [127.0.0.1])
+	by mx.suckless.org (OpenSMTPD) with ESMTP id b813bec7
+	for <ethan@rapidcow.org>;
+	Wed, 5 Nov 2025 11:16:05 +0100 (CET)
+Delivered-To: dev@suckless.org
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	by mx.suckless.org (OpenSMTPD) with ESMTPS id dd8abc2b (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <dev@suckless.org>;
+	Wed, 5 Nov 2025 11:14:05 +0100 (CET)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5943d1d6442so701155e87.0
+        for <dev@suckless.org>; Wed, 05 Nov 2025 02:14:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=inz.fi; s=inz; t=1762337645; x=1762942445; darn=suckless.org;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Uy3D+oui2MgcblwEndUHO7IgayeL58yIEGNlCwwCxwo=;
+        b=XbMNzPpYYY/HkWHVCXSYxU+rEhJ7ArexNafiJ7AdXzfnDrP5IIufA96wLfU4n/dvLd
+         NlxMtTClL+kZC9VhzBtgBvdnwA/8Ofeah8sLI23NTuxUjIWnwKUtM7iDbUe7IpBX+Pqh
+         Lkm5a0iplOjqstCuAkkJ+Xsk4cRgzYr5NMsmQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762337645; x=1762942445;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Uy3D+oui2MgcblwEndUHO7IgayeL58yIEGNlCwwCxwo=;
+        b=TmPN3O4FXDgnCi3ofOYVtUuSUzABu2y12BsYQGiLtyX03ue00WrzF4WA66TpEWHJAT
+         6YbczQo0dVFW95sAFMegbsSfr/+jfXyR9wS7dvO5P5FbUfCpAFRpNsvb276L5F+3OXP2
+         yWBqrDBukvVxuvODQbhNLJM4GQfVYLZckpjCjkmAU4mO8b/2kvKXYVWwXG3A45/1+eOQ
+         Q5IZmdGnZNjqXZyRngwineBX29hO7/E4uD5XN4ufRL58cMMoB3V1B8n9kJMchhRICzaQ
+         +1MIKvlxWKYV52Oalpi22V+0L5IvGF2NWyZdjJRIctWYPdTQOKAjNi6N7y2ZvmqD9LWM
+         4z4w==
+X-Gm-Message-State: AOJu0YzPYOBAo1XRVYO5R2DX/xUpGDZRarSpR2M9+6htTpTRbsQr/Hzi
+	N2pdl+jLLvIxZZi56HwSGHq2af9eMm1hC3GlMk98LhHLexWQOPQVcmOmeYjx92xoehZWjIQCbxH
+	qsa4B
+X-Gm-Gg: ASbGncse2pb8MirvGSj3FbDPtlFItXAlrhSTVvDnPCBsU0YQREv3Nu2OGKb3GPLovcH
+	ta2M5ZgJGX8iyw2DfgM2qqWbR45Gvoi+K0qu8TNOH8PTXrG00lrboTjC4u5GIBRg5t8a5Twj/Ya
+	R5Vxm8ghJ8abG/ZtR82bTYHWvyOAa1sjzuhl8FdDv/8w5d8dTXvSX9k3fkTGes7HDB/Ym3J4TvB
+	UqAU9xWn9f9xLnv6c5kZNqYbowrTln4UAVy0lSHVLQhModbxhT4xGB5vxEDUcxDg0uJcSjy2xr4
+	6tiG7qBWCu4mXIa438p01cnPKm0K6Ag26baBXlpIMK0Tp1FaBT1c1dGF2h8PYTd1MLUmu4d/OCX
+	RBJYDJ21TPGF0/KQoeqIyD3HBq9vmJF+PMCAIgvMqzIOC47664NKqKH4iTA3FptQ0/sBFliW24o
+	t5tcOs4voZd6iE1poOyTjkuEVp9CRKYlcsEAqe
+X-Google-Smtp-Source: AGHT+IG4NDE+tM02aPgRnQLRU2nl7mv2j7zE+608320yF7blA4BTI5E05Y8NOQafx/VikAQhlJhPAw==
+X-Received: by 2002:a05:6512:15a4:b0:594:2c64:54c9 with SMTP id 2adb3069b0e04-5943d7c27acmr821895e87.37.1762337644512;
+        Wed, 05 Nov 2025 02:14:04 -0800 (PST)
+Received: from [192.168.63.167] (85-76-47-150-nat.elisa-mobile.fi. [85.76.47.150])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-594343b7cc5sm1601104e87.49.2025.11.05.02.14.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Nov 2025 02:14:04 -0800 (PST)
+Message-ID: <47f39088-82f3-4e8f-86bd-7ae05d8039ec@inz.fi>
+Date: Wed, 5 Nov 2025 12:14:03 +0200
+Precedence: list
+Reply-To: dev mail list <dev@suckless.org>
+List-Id: dev mail list <dev.suckless.org>
+List-Unsubscribe: <mailto:dev+unsubscribe@suckless.org>
+List-Subscribe: <mailto:dev+subscribe@suckless.org>
+List-Help: <mailto:dev+help@suckless.org>
+List-Post: <mailto:dev@suckless.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [dev] [sbase] grep: global-buffer-overflow
+Content-Language: en-US
+To: dev mail list <dev@suckless.org>,
+ "Roberto E. Vargas Caballero" <k0ga@shike2.net>
+References: <20251023152806.65a95436@haengemotte.localdomain>
+ <aQsYo09NRHfdn8k0@simple-cc.org>
+From: Santtu Lakkala <inz@inz.fi>
+In-Reply-To: <aQsYo09NRHfdn8k0@simple-cc.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+On 5.11.2025 11.28, Roberto E. Vargas Caballero wrote:
+> On Thu, Oct 23, 2025 at 03:28:06PM +0200, Frank Busse wrote:
+>> Hi,
+>>
+>> again found by KLEE:
+>>
+>> ---
+>> $ printf '\x00\x00\n\x00\x00\x00\x00\x00' > A
+>> $ ./grep -xsf A
+>> ERROR: AddressSanitizer: global-buffer-overflow
+>> $ ./grep -wf A
+>> ERROR: AddressSanitizer: global-buffer-overflow
+> 
+> The following patch should solve these problems. While we were
+> analyzing the problem it was discovered that the flag -x doesn't
+> work well, but that is a different topic to be addessed in a different
+> commit.
+
+Even this change actually fixes issues with -x:
+
+Before:
+$ printf 'foo\nfoo$\n' | ./grep -x 'foo$'
+foo$
+
+After:
+$ printf 'foo\nfoo$\n' | ./grep -x 'foo$'
+foo
+
+While the real issue of using 'strlen() + 1' with 'fmemopen()' is not 
+fixed, the use of 'strlen()' in addpattern ignores the (extra) string 
+terminator included by getline().
+
+>   	/* a null BRE/ERE matches every line */
+> -	if (!Fflag)
+> +	if (!Fflag) {
+>   		if (pattern[0] == '\0')
+> -			pattern = "^";
+> +			pattern = beg;
+
+This is not needed, the problem always was READ access due to patlen 
+mismatch:
+
+==1109644==ERROR: AddressSanitizer: global-buffer-overflow on address 
+0x0000004060a2 at pc 0x000000404354 bp 0x7ffcf6cd3f70 sp 0x7ffcf6cd3f68
+READ of size 1 at 0x0000004060a2 thread T0
+     #0 0x404353 in addpattern /home/inz/Projects/sbase/grep.c:60
+     #1 0x404353 in addpatternfile /home/inz/Projects/sbase/grep.c:96
+     #2 0x402b2e in main /home/inz/Projects/sbase/grep.c:213
+
+> +	}
+> +	patlen = strlen(pattern);
+
+-- 
+Cheers,
+   Santtu
+
+
+
+
+From ???@??? Wed Nov  5 14:36:33 2025
+ARC-Seal: i=1; a=rsa-sha256; t=1762339692; cv=none; d=forwardemail.net;
+ s=default;
+ b=U6lZpjX7G7dFgpSkB84ZKV+Ekdqw10h2yHaj6Kn2wNLZ1D/k2yApjsR0sH2GdZV0IJZa3/SMU
+ oS5pyzCm2Mxs1NRK0LOusR1BSDcI2NL+0X2EKi8ORpHPpu3m1m8GrVRyBbeFHidXcbYbk6UaMaK
+ fteDLV1TkGNn2LDQwy4oHdI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=forwardemail.net; h=In-Reply-To: Content-Type: MIME-Version: List-Post:
+ List-Help: List-Subscribe: List-Unsubscribe: List-Id: Reply-To:
+ References: Message-ID: Subject: Cc: To: From: Date; q=dns/txt; s=default;
+ t=1762339692; bh=tNrv/uR8R6yesgMlZKNsgdNzsRLVNYvWaKYnm+POgLI=;
+ b=PwAnSRI3WFgJcx2Czz1xsaIDgEA0WiF1tMQHkPZ99k0H6flNmnNyXccpNwkDfJ3yFg2KsrKTp
+ WmT//hUNhuMxp80PUdiI5vVjfN9AL4Mgwkuo7VW6nkU9qTP56OBUmKV9O8MXGTju8gUhErQOJQF
+ nsbR0VuPCQ7B6Vjs/52/+qo=
+ARC-Authentication-Results: i=1; mx1.forwardemail.net;
+ dkim=none (message not signed);
+ spf=pass (mx1.forwardemail.net: domain of dev+bounces-30751-ethan=rapidcow.org@suckless.org designates 195.201.112.86 as permitted sender)
+ smtp.mailfrom="dev+bounces-30751-ethan=rapidcow.org@suckless.org" smtp.helo=suckless.org;
+ dmarc=none header.from=shike2.net;
+ bimi=skipped (DMARC not enabled)
+Received: from suckless.org ([195.201.112.86] mx.suckless.org) by
+ mx1.forwardemail.net (Forward Email) with ESMTPS for <ethan@rapidcow.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384); Wed, 05 Nov 2025 10:48:08
+ +0000
+X-Original-To: ethan@rapidcow.org
+X-Forward-Email-Sender: rfc822;
+ dev+bounces-30751-ethan=rapidcow.org@suckless.org, mx.suckless.org,
+ 195.201.112.86
+X-Forward-Email-Version: 1.4.3
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Received: from suckless.org (localhost [127.0.0.1])
+	by mx.suckless.org (OpenSMTPD) with ESMTP id 1b1c58b0
+	for <ethan@rapidcow.org>;
+	Wed, 5 Nov 2025 11:48:07 +0100 (CET)
+Delivered-To: dev@suckless.org
+Received: from simple-cc.org (simple-cc.org [46.23.94.210])
+	by mx.suckless.org (OpenSMTPD) with ESMTPS id 66d4ba79 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <dev@suckless.org>;
+	Wed, 5 Nov 2025 11:47:08 +0100 (CET)
+Received: from localhost (simple-cc.org [local])
+	by simple-cc.org (OpenSMTPD) with ESMTPA id 020da8f3;
+	Wed, 5 Nov 2025 11:47:07 +0100 (CET)
+Date: Wed, 5 Nov 2025 11:47:07 +0100
+From: "Roberto E. Vargas Caballero" <k0ga@shike2.net>
+To: Santtu Lakkala <inz@inz.fi>
+Cc: dev mail list <dev@suckless.org>
+Subject: Re: [dev] [sbase] grep: global-buffer-overflow
+Message-ID: <aQsrKyozthH1Tcz8@simple-cc.org>
+References: <20251023152806.65a95436@haengemotte.localdomain>
+ <aQsYo09NRHfdn8k0@simple-cc.org>
+ <47f39088-82f3-4e8f-86bd-7ae05d8039ec@inz.fi>
+Precedence: list
+Reply-To: dev mail list <dev@suckless.org>
+List-Id: dev mail list <dev.suckless.org>
+List-Unsubscribe: <mailto:dev+unsubscribe@suckless.org>
+List-Subscribe: <mailto:dev+subscribe@suckless.org>
+List-Help: <mailto:dev+help@suckless.org>
+List-Post: <mailto:dev@suckless.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <47f39088-82f3-4e8f-86bd-7ae05d8039ec@inz.fi>
+
+Hi,
+
+On Wed, Nov 05, 2025 at 12:14:03PM +0200, Santtu Lakkala wrote:
+> Even this change actually fixes issues with -x:
+> 
+> Before:
+> $ printf 'foo\nfoo$\n' | ./grep -x 'foo$'
+> foo$
+> 
+> After:
+> $ printf 'foo\nfoo$\n' | ./grep -x 'foo$'
+> foo
+
+Nice! I didn't realize about it xD
+
+> While the real issue of using 'strlen() + 1' with 'fmemopen()' is not fixed,
+> the use of 'strlen()' in addpattern ignores the (extra) string terminator
+> included by getline().
+
+Yes, I decided not changing the fmemopen() calls because we are protected
+against NUL characters now. But thinking now, why adding a byte to ignore it
+later? I think I am going to remove the +1 in every call.
+
+> >   	/* a null BRE/ERE matches every line */
+> > -	if (!Fflag)
+> > +	if (!Fflag) {
+> >   		if (pattern[0] == '\0')
+> > -			pattern = "^";
+> > +			pattern = beg;
+> 
+> This is not needed, the problem always was READ access due to patlen
+> mismatch:
+
+Yes, you are right, an empty regex should match always. I am going
+to remove the full if.
+
+Regards,
+
+
+
